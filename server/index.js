@@ -1,38 +1,71 @@
+require('dotenv').config();
 const express = require('express');
-const app = express();
 const cors = require('cors');
-const env = require('dotenv').config();
-const pool = require('./database');
+const database = require('./database');
+const app = express();
 
-//middleware for headers
+const morgan = require('morgan');
+
 app.use(cors());
-
-//confirm and allow access to req.body
-app.use(express.json())
+app.use(morgan("tiny"));
+app.use(express.json());
 
 //routes
 
-//get all todos
+app.post("/test/todos", (req, res) => {
+    console.log(req.body)
 
-//get specific todo
+    res.status(201).json({
+        status: "sucess",
+    })
+})
 
-//create todo
-app.post('/todos', async (req, res) => {
+app.get("/test/todos/:id", (req, res) => {
+    console.log(req.params)
+
+    res.json({
+        status: "success",
+    })
+
+})
+
+app.post("/todos", async (req, res) => {
     try {
-        // res.json(req.body);
-
         const { description } = req.body;
-        const newTodo = await pool.query(
-            'INSERT INTO todo (description) VALUES($1) RETURNING *',
+        console.log(description)
+
+
+        const newTodo = await database.query(
+            "INSERT INTO todo (description) VALUES($1) RETURNING *",
             [description]
         );
+        console.log(newTodo)
 
-        res.json(newTodo);
+
+        res.status(201).json({
+            status: "Success",
+            data: {
+                input: newTodo.rows[0],
+                "null": "null"
+            }
+        });
+        // res.json(newTodo.rows[0]);
 
     } catch (err) {
-        console.error(err.message)
+        console.error(err.message);
     }
-})
+});
+
+//get all todos
+
+app.get("/todos", async (req, res) => {
+    try {
+        const allTodos = await database.query("SELECT * FROM todo");
+        res.json(allTodos.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
 
 //edit todo
 
@@ -40,6 +73,6 @@ app.post('/todos', async (req, res) => {
 
 
 
-app.listen(4000, () => {
-    console.log('server is starting on 4000');
+app.listen(process.env.PORT, () => {
+    console.log(`server is live on ${process.env.PORT}`);
 })

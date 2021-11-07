@@ -1,12 +1,18 @@
 //configure database connection
 //used to run queries
-const Pool = require('pg').Pool;
+const { Pool } = require('pg');
 
 const pool = new Pool({
-    user: 'postgres',
+    user: "postgres",
+    host: "localhost",
     password: process.env.dbpassword,
-    port: 4000,
-    database: 'pernapptodos',
-})
+    database: "pernapptodo",
+    port: 5432,
+});
+console.log(pool)
 
-module.exports = pool;
+// module.exports = pool
+
+module.exports = {
+    query: (text, params) => pool.query(text, params),
+};
