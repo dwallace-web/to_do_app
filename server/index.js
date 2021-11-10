@@ -88,8 +88,29 @@ app.put("/api/tasks/:id", async (req, res) => {
     }
 
 })
+
 //delete todo
 
+app.delete("/api/tasks/:id", async (req, res) => {
+    console.log(req.params)
+
+    task_id = req.params.id;
+    task_description = req.body.description
+
+    console.log(task_description)
+    try {
+        const this_task = await database.query("DELETE FROM todo WHERE todo_id = $1",
+            [task_id]
+        );
+
+        res.status(201).json({
+            data: `Task ${task_description} was deleted.`
+        });
+    } catch (err) {
+        console.error(err.message);
+    }
+
+})
 
 
 app.listen(process.env.PORT, () => {

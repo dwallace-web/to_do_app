@@ -1,4 +1,4 @@
--- CREATE DATABASE pernapptodo;
+-- CREATE DATABASE perntasks;
 
 -- CREATE TABLE todo(
 --     todo_id SERIAL PRIMARY KEY,
