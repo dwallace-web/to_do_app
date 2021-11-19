@@ -10,17 +10,12 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 
-//routes
-
-
-
-
 app.post("/api/tasks", async (req, res) => {
     try {
         const { description } = req.body;
 
         const newTask = await database.query(
-            "INSERT INTO todo (description) VALUES($1) RETURNING *",
+            "INSERT INTO tasks (description) VALUES($1) RETURNING *",
             [description]
         );
         res.status(201).json({
@@ -35,11 +30,11 @@ app.post("/api/tasks", async (req, res) => {
     }
 });
 
-//get all todos
+//get all tasks
 
 app.get("/api/tasks", async (req, res) => {
     try {
-        const allTasks = await database.query("SELECT * FROM todo");
+        const allTasks = await database.query("SELECT * FROM tasks");
         res.status(201).json({
             data: allTasks.rows
         });
@@ -56,7 +51,7 @@ app.get("/api/tasks/:id", async (req, res) => {
     task_id = req.params.id;
 
     try {
-        const thisTask = await database.query("SELECT * FROM todo WHERE todo_id = $1", [task_id]);
+        const thisTask = await database.query("SELECT * FROM tasks WHERE task_id = $1", [task_id]);
         res.status(201).json({
             data: thisTask.rows[0].description
         });
@@ -66,7 +61,6 @@ app.get("/api/tasks/:id", async (req, res) => {
 
 })
 
-//edit todo
 
 app.put("/api/tasks/:id", async (req, res) => {
     console.log(req.params)
@@ -76,7 +70,7 @@ app.put("/api/tasks/:id", async (req, res) => {
 
     console.log(task_description)
     try {
-        const this_task = await database.query("UPDATE todo SET description = $1 WHERE todo_id = $2",
+        const this_task = await database.query("UPDATE task SET description = $1 WHERE task_id = $2",
             [task_description, task_id]
         );
 
@@ -89,8 +83,6 @@ app.put("/api/tasks/:id", async (req, res) => {
 
 })
 
-//delete todo
-
 app.delete("/api/tasks/:id", async (req, res) => {
     console.log(req.params)
 
@@ -99,7 +91,7 @@ app.delete("/api/tasks/:id", async (req, res) => {
 
     console.log(task_description)
     try {
-        const this_task = await database.query("DELETE FROM todo WHERE todo_id = $1",
+        const this_task = await database.query("DELETE FROM tasks WHERE task_id = $1",
             [task_id]
         );
 
