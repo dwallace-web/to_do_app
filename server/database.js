@@ -9,7 +9,7 @@ const pool = new Pool({
     database: "perntasks",
     port: 5432,
 });
-console.log(pool)
+// console.log(pool)
 
 // module.exports = pool
 

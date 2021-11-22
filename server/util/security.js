@@ -2,8 +2,7 @@
 require('dotenv').config();
 const token = require("jsonwebtoken")
 
-genToken() = (userId) => {
-
+genToken = (userId) => { 
     const payload = {
         user: {
             id: userId
@@ -14,4 +13,4 @@ genToken() = (userId) => {
 }
 
 
-module.exports = security;
+module.exports = genToken;

@@ -5,9 +5,8 @@
 --     description VARCHAR(255)
 -- );
 
-CREATE TABLE users(
-    user_id SERIAL PRIMARY KEY,
-	email VARCHAR ( 255 ) UNIQUE NOT NULL,
-	password VARCHAR ( 50 ) NOT NULL,
-    created_date TIMESTAMP NOT NULL
-)
+-- CREATE TABLE users(
+--     user_id SERIAL PRIMARY KEY,
+-- 	user_email VARCHAR ( 255 ) UNIQUE NOT NULL,
+-- 	user_pw VARCHAR ( 255 ) NOT NULL
+-- );
