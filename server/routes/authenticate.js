@@ -42,8 +42,6 @@ router.post('/signup', async (req, res) => {
             });
         }
 
-        //return token
-
     } catch (error) {
         console.log(error);
         res.status(500).send('Server has an error. ' + error)
@@ -61,27 +59,31 @@ router.post('/signin', async (req, res) => {
 
     try {
         const user = await database.query("SELECT * FROM users WHERE user_email = $1", [user_detail_email])
+        console.log(user)
 
-        console.log(user.rows[0])
+        if (user.rows == 0) {
+            return res.status(500).json({
+                message: "The the email or password does not match. Try again. "
+            })
+        }
 
         let checkPW = await bcrypt.compare(user_detail_pw, user.rows[0].user_pw);
 
         if (checkPW) {
             console.log('pw matches')
-            const Token = JWT(user.rows[0].user_id)
-            console.log(Token)
+            const token = JWT(user.rows[0].user_id)
+            console.log(token)
             return res.status(200).json({
                 message: "Password matches. Welcome back",
+                token: token
             })
         } else {
             console.log('bad password')
             return res.status(401).json("Password does not match")
         }
-
     } catch (error) {
         res.status(500).send("Something ain't working bro. Error")
     }
-
 })
 
 

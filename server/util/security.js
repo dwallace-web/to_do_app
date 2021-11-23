@@ -2,14 +2,13 @@
 require('dotenv').config();
 const token = require("jsonwebtoken")
 
-genToken = (userId) => { 
+genToken = (userId) => {
     const payload = {
         user: {
             id: userId
         }
     };
-
-    return token.sign(payload, process.env.JWT, { expiresIn: '24h' })
+    return token.sign(payload, "justademotoken", { expiresIn: '24h' })
 }
 
 
