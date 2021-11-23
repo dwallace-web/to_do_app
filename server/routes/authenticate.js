@@ -1,7 +1,7 @@
 const router = require("express").Router();
 // const router = express.Router()
 const database = require("../database");
-const bycrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const JWT = require("../util/security");
 
 //sign up
@@ -25,8 +25,8 @@ router.post('/signup', async (req, res) => {
             console.log([user_detail_email, user_detail_pw])
 
             let saltRounds = 12;
-            let salt = await bycrypt.genSalt(saltRounds)
-            let brcryptPassword = await bycrypt.hash(user_detail_pw, salt)
+            let salt = await bcrypt.genSalt(saltRounds)
+            let brcryptPassword = await bcrypt.hash(user_detail_pw, salt)
 
 
             let newUser = await database.query("INSERT INTO users (user_email, user_pw) VALUES($1, $2) RETURNING *",
@@ -37,10 +37,6 @@ router.post('/signup', async (req, res) => {
             res.status(201).json({
                 status: "Success",
                 data: {
-                    input: {
-                        email: newUser.rows[0].user_email,
-                        id: newUser.rows[0].user_id
-                    },
                     token: localToken
                 }
             });
@@ -56,13 +52,37 @@ router.post('/signup', async (req, res) => {
 });
 
 
-
-
-
 //sign in
 
+router.post('/signin', async (req, res) => {
+
+    const { user_detail_email, user_detail_pw } = req.body
 
 
+    try {
+        const user = await database.query("SELECT * FROM users WHERE user_email = $1", [user_detail_email])
+
+        console.log(user.rows[0])
+
+        let checkPW = await bcrypt.compare(user_detail_pw, user.rows[0].user_pw);
+
+        if (checkPW) {
+            console.log('pw matches')
+            const Token = JWT(user.rows[0].user_id)
+            console.log(Token)
+            return res.status(200).json({
+                message: "Password matches. Welcome back",
+            })
+        } else {
+            console.log('bad password')
+            return res.status(401).json("Password does not match")
+        }
+
+    } catch (error) {
+        res.status(500).send("Something ain't working bro. Error")
+    }
+
+})
 
 
 
