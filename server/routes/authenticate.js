@@ -3,6 +3,7 @@ const router = require("express").Router();
 const database = require("../database");
 const bcrypt = require("bcrypt");
 const JWT = require("../util/security");
+const authorize = require("../util/authorize");
 
 //sign up
 
@@ -80,8 +81,13 @@ router.post('/signin', async (req, res) => {
     }
 })
 
-
-
+router.get('/verified', authorize, async (req, res) => {
+    try {
+        res.json("It is DAMN " + true)
+    } catch (error) {
+        res.status(500).send("Something ain't working bro. Error")
+    }
+})
 
 
 module.exports = router;
