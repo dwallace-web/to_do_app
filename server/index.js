@@ -13,8 +13,6 @@ app.use(express.json());
 app.use("/api/user", require("./routes/authenticate"))
 app.use("/", require("./routes/CRUD"))
 
-
-
 app.listen(process.env.PORT, () => {
     console.log(`server is live on ${process.env.PORT}`);
 })

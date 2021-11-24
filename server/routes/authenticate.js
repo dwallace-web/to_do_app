@@ -12,17 +12,13 @@ router.post('/signup', async (req, res) => {
     const { user_detail_email, user_detail_pw } = req.body
 
     try {
-        console.log([user_detail_email, user_detail_pw])
-        console.log('test')
-
-        //find users in database -- break if email exists
         const user = await database.query("SELECT * FROM users WHERE user_email = $1", [user_detail_email])
-        console.log(user)
 
-        if (user.rows[0] > 0) {
-            res.status(400).send('this user exists already. login instead')
+        console.log(user.rows[0])
+
+        if (user.rows.length > 0) {
+            res.status(400).send('This user exists already. login instead')
         } else {
-            console.log([user_detail_email, user_detail_pw])
 
             let saltRounds = 12;
             let salt = await bcrypt.genSalt(saltRounds)
@@ -35,10 +31,8 @@ router.post('/signup', async (req, res) => {
             const localToken = JWT(newUser.rows[0].user_id)
 
             res.status(201).json({
-                status: "Success",
-                data: {
-                    token: localToken
-                }
+                status: "Sign Up Successful",
+                token: localToken
             });
         }
 

@@ -4,6 +4,8 @@ const database = require("../database");
 router.post("/api/tasks", async (req, res) => {
     try {
         const { description } = req.body;
+        const { headers } = req.headers;
+        console.log('headers', headers);
 
         const newTask = await database.query(
             "INSERT INTO tasks (description) VALUES($1) RETURNING *",
