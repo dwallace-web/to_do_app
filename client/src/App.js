@@ -1,10 +1,17 @@
 import './App.css';
-import { Container } from '@chakra-ui/react'
+import TaskBody from './components/Tasks/TaskBody';
+import Menu from './components/Body/Menu';
+import { useState } from 'react';
+
+
 
 function App() {
+  const [Token, setToken] = useState('');
   return (
-    <Container>
-    </Container>
+    <div className="App">
+      <Menu />
+      <TaskBody />
+    </div>
   );
 }
 
