@@ -60,7 +60,7 @@ router.post('/signin', QA,   async (req, res) => {
             return res.status(401).json("Password does not match")
         }
     } catch (error) {
-        res.status(500).send("Something ain't working bro. Error")
+        res.status(500).send("Something isn't right here. Error")
     }
 })
 
@@ -70,7 +70,7 @@ router.get('/verified', authorize, async (req, res) => {
     try {
         res.json("It is DAMN " + true)
     } catch (error) {
-        res.status(500).send("Something ain't working bro. Error")
+        res.status(500).send("Something isn't right here.  Error")
     }
 })
 

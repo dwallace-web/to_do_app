@@ -9,9 +9,6 @@ const pool = new Pool({
     database: "perntasks",
     port: 5432,
 });
-// console.log(pool)
-
-// module.exports = pool
 
 module.exports = {
     query: (text, params) => pool.query(text, params),
