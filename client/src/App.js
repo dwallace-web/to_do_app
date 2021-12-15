@@ -1,12 +1,11 @@
 import './App.css';
 import TaskBody from './components/Tasks/TaskBody';
 import Menu from './components/Body/Menu';
-import { useState } from 'react';
-
-
+import { useState, useEffect } from 'react';
 
 function App() {
-  const [Token, setToken] = useState('');
+  const [token, setToken] = useState('');
+  
   return (
     <div className="App">
       <Menu />

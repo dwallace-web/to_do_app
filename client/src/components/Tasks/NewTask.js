@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 
-export class NewTask extends Component {
-    render() {
-        return (
-            <div>
-                New Task
-            </div>
-        )
-    }
+function NewTask() {
+    return (
+        <div>
+
+        </div>
+    )
 }
 
 export default NewTask

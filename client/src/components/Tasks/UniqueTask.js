@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export class UniqueTask extends Component {
-    render() {
-        return (
-            <div>
-                Unique Task
-            </div>
-        )
-    }
+function UniqueTask() {
+    return (
+        <div>
+            Unique Task
+        </div>
+    )
 }
 
 export default UniqueTask
