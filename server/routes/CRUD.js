@@ -2,9 +2,11 @@ const router = require("express").Router();
 const database = require("../database");
 
 router.post("/api/tasks", async (req, res) => {
+    
     try {
         const { description } = req.body;
         const { headers } = req.headers;
+
         console.log('headers', headers);
 
         const newTask = await database.query(

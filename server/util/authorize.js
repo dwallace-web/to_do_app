@@ -5,20 +5,20 @@ require("dotenv");
 module.exports = async (req, res, next) => {
 
     const userToken = req.header("token");
-    console.log(userToken)
+    // console.log(userToken)
     try {
         // if the usern't doesn't have a token stop here
         if (!userToken) {
-            return res.status(400).json("You don't have permissions for this action. V1")
+            return res.status(400).json("You don't have permissions for this action. We cannot validate your login information. Sign Up or Sign In to continue.")
         } else {
             const payload = await jwt.verify(userToken, process.env.JWT)
-            console.log(payload)
-            res.user = payload
+            console.log({ "authorize": payload.user.id })
+            res.user = payload.user.id
             next()
         }
 
     } catch (error) {
         console.log(error)
-        return res.status(400).json("You don't have permission for that! V2")
+        return res.status(400).json("It's been too long. Sign Up or Sign In to continue.")
     }
 }

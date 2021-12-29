@@ -36,11 +36,11 @@ router.post('/signup', QA, async (req, res) => {
 });
 
 //sign in
-router.post('/signin', QA,   async (req, res) => {
+router.post('/signin', QA, async (req, res) => {
     const { user_detail_email, user_detail_pw } = req.body
     try {
         const user = await database.query("SELECT * FROM users WHERE user_email = $1", [user_detail_email])
-        console.log(user)
+        // console.log(user)
         if (user.rows == 0) {
             return res.status(500).json({
                 message: "The the email or password does not match. Try again. "
@@ -64,13 +64,19 @@ router.post('/signin', QA,   async (req, res) => {
     }
 })
 
-//check that the token is valid
+//check that the token is valid with authorize.js
 // provide the userId back in the token
 router.get('/verified', authorize, async (req, res) => {
     try {
-        res.json("It is DAMN " + true)
+        console.log({ "authenticate": res.user })
+         res.status(200).send({ "token": true })
+        // res.status(200).send({ "token": True })
     } catch (error) {
-        res.status(500).send("Something isn't right here.  Error")
+        res.status(500).send
+            ({
+                "token": false,
+                "message": "Sign Up or Sign In to Continue"
+            })
     }
 })
 
