@@ -1,18 +1,14 @@
 const router = require("express").Router();
 const database = require("../database");
+const authorize = require("../util/authorize");
 
-router.post("/api/tasks", async (req, res) => {
-    
+router.post("/api/tasks", authorize, async (req, res) => {
+    console.log('authorize passed')    
     try {
         const { description } = req.body;
-        const { headers } = req.headers;
+        console.log("request", req.user);
 
-        console.log('headers', headers);
-
-        const newTask = await database.query(
-            "INSERT INTO tasks (description) VALUES($1) RETURNING *",
-            [description]
-        );
+        const newTask = await database.query("INSERT INTO tasks (description, task_owner) VALUES($1, $2) RETURNING *", [description, task_owner]);
         res.status(201).json({
             status: "Success",
             data: {

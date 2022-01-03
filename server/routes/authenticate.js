@@ -67,10 +67,10 @@ router.post('/signin', QA, async (req, res) => {
 //check that the token is valid with authorize.js
 // provide the userId back in the token
 router.get('/verified', authorize, async (req, res) => {
+    console.log('authorize passed')   
     try {
         console.log({ "authenticate": res.user })
          res.status(200).send({ "token": true })
-        // res.status(200).send({ "token": True })
     } catch (error) {
         res.status(500).send
             ({

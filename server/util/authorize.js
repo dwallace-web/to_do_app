@@ -4,8 +4,9 @@ require("dotenv");
 
 module.exports = async (req, res, next) => {
 
-    const userToken = req.header("token");
-    // console.log(userToken)
+    const userToken = req.header("Authorization");
+    console.log('authorize==> ' ,userToken)
+
     try {
         // if the usern't doesn't have a token stop here
         if (!userToken) {
