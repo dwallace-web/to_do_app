@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form } from 'react-bootstrap';
 
 function SignUp() {
 
@@ -28,31 +28,26 @@ function SignUp() {
 
     return (
         <div>
-            <Button>Sign Up</Button>
+            <h1>Sign Up</h1>
+
+
             <Form>
-                <FormGroup>
-                    <Label for="exampleEmail">
-                        Email
-                    </Label>
-                    <Input
-                        id="exampleEmail"
-                        name="email"
-                        placeholder="with a placeholder"
-                        type="email"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="examplePassword">
-                        Password
-                    </Label>
-                    <Input
-                        id="examplePassword"
-                        name="password"
-                        placeholder="password placeholder"
-                        type="password"
-                    />
-                </FormGroup>
-                <Button onClick={signUp}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Text className="text-muted">
+                        We'll never share your email with anyone else.
+                    </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                    <Form.Check type="checkbox" label="Check me out" />
+                </Form.Group>
+                <Button variant="primary" type="submit">
                     Submit
                 </Button>
             </Form>

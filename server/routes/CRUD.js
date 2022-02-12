@@ -76,15 +76,14 @@ router.put("/api/tasks/:id", authorize, async (req, res) => {
     console.log(req.params)
 
     task_id = req.params.id;
-    task_description = req.body.task_description
+    task_description = req.body.description
     console.log(task_description)
 
     const task_owner = res.user;
     console.log("user", task_owner)
 
     try {
-        const this_task = await database.query("UPDATE tasks SET description = $1 WHERE task_id = $2 AND task_owner = $3", [task_description, task_id, task_owner]
-        );
+        const this_task = await database.query("UPDATE tasks SET description = $1 WHERE task_id = $2 AND task_owner = $3", [task_description, task_id, task_owner]);
 
         res.status(201).json({
             data: `Task ID# ${task_id}, was updated to ${task_description}`
