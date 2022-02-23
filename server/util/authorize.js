@@ -3,9 +3,10 @@ const jwt = require("jsonwebtoken")
 require("dotenv");
 
 module.exports = async (req, res, next) => {
-
+    console.log('start authorize.js')
+    console.log(req.headers.authorization)
     const userToken = req.header("Authorization");
-    console.log('authorize==> ' ,userToken)
+    console.log('authorize==> ', userToken)
 
     try {
         // if the usern't doesn't have a token stop here

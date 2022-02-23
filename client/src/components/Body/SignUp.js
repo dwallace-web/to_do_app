@@ -1,56 +1,66 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap';
+import apiurl from '../../environment';
 
-function SignUp() {
+export const SignUp = (props) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userTokenStatus, setUserTokenStatus] = useState(false)
+    const [signUpStatus, setSignUpStatus] = useState(true);
+    const result = [];
 
-    async function signUp(event) {
+
+    async function signUpUser(event) {
+
+
         event.preventDefault();
-        await fetch(`${process.env.API_URL}/api/user/signup`, {
+
+        await fetch(`${apiurl}/api/user/signup`, {
             method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json'
             }),
             body: JSON.stringify({ user_detail_email: email, user_detail_pw: password }),
         })
-            .then(response => response.json())
-            .then(result => {
-                console.log(result)
-                setUserTokenStatus(true);
-                console.log('sign up completed')
+            .then(response => {
+                if (response.status !== 201) {
+                    return response.json()
+                }
+                return response.json()
             })
-            .catch(error => console.log('error', error));
+            .then(result => {
+                if (result.token) {
+                    props.updateToken(result.token)
+                    setSignUpStatus(true);
+                    // window.location.reload(true)
+                }
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
 
 
     return (
         <div>
             <h1>Sign Up</h1>
-
-
-            <Form>
+            <Form onSubmit={signUpUser}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Control type="email" placeholder="Enter email" required minLength={8} onChange={(e) => setEmail(e.target.value)} />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
                 </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
+                    <Form.Control type="password" placeholder="Password" required minLength={8} onChange={(e) => setPassword(e.target.value)} />
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                    <Form.Check type="checkbox" label="Check me out" />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
+                <Button variant="primary" type="submit">Sign Up</Button>
             </Form>
+            <div>
+                {signUpStatus ? <p>Sign Up Please</p> : <h6>Sign Up Failed</h6>}
+            </div>
         </div>
     )
 }

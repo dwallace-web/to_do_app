@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import NewTask from './NewTask';
 import ShowAllTasks from './ShowAllTasks'
 
-function TaskBody() {
+function TaskBody(props) {
     return (
         <div>
             <h1>Task Body</h1>
-            <NewTask />
-            <ShowAllTasks />
+            <NewTask token={props.token} />
+            {/* {
+                props.token !== null ? <ShowAllTasks token={props.token} /> : null
+            } */}
+
         </div>
     )
 }

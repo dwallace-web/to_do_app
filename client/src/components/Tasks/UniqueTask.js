@@ -1,11 +1,7 @@
 import React from 'react'
 
-function UniqueTask() {
+export default function UniqueTask() {
     return (
-        <div>
-            Unique Task
-        </div>
+        <div>UniqueTask</div>
     )
 }
-
-export default UniqueTask

@@ -1,13 +1,17 @@
-let apiurl = '';
+let apiurl = 'http://localhost:5000';
 
 switch (window.location.hostname) {
     case 'localhost':
+        // apiurl = 5000;
+        break;
     case '127.0.0.1':
-        API_URL = 'localhost';
+        apiurl = 'localhost';
         break;
     case '.herokuapp.com':
-        API_URL = 'localhost';
+        apiurl = 'localhost';
         break;
 }
+
+console.log('current api url is', apiurl);
 
 export default apiurl;

@@ -16,22 +16,23 @@ router.post('/signup', QA, async (req, res) => {
         const user = await database.query("SELECT * FROM users WHERE user_email = $1", [user_detail_email])
         // console.log(user.rows[0])
         if (user.rows.length > 0) {
-            res.status(400).send('This user exists already. login instead')
+            res.status(400).json({ body: 'This user exists already. login instead' })
         } else {
             let saltRounds = 12;
             let salt = await bcrypt.genSalt(saltRounds)
             let brcryptPassword = await bcrypt.hash(user_detail_pw, salt)
             let newUser = await database.query("INSERT INTO users (user_email, user_pw) VALUES($1, $2) RETURNING *",
                 [user_detail_email, brcryptPassword]);
-            const localToken = JWT(newUser.rows[0].user_id)
-            res.status(201).json({
-                status: "Sign Up Successful",
-                token: localToken
+            const token = JWT(newUser.rows[0].user_id)
+            console.log("sign up token " + token)
+            return res.status(201).json({
+                message: "Sign Up Successful",
+                token: token
             });
         }
     } catch (error) {
         console.log(error);
-        res.status(500).send('Server has an error. ' + error)
+        res.status(500).json({ body: 'Server has an error. ' + error })
     }
 });
 
@@ -67,10 +68,10 @@ router.post('/signin', QA, async (req, res) => {
 //check that the token is valid with authorize.js
 // provide the userId back in the token
 router.get('/verified', authorize, async (req, res) => {
-    console.log('authorize passed')   
+    console.log('authorize passed')
     try {
         console.log({ "authenticate": res.user })
-         res.status(200).send({ "token": true })
+        res.status(200).send({ "valid_token": true })
     } catch (error) {
         res.status(500).send
             ({
