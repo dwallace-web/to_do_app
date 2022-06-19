@@ -3,12 +3,23 @@ import TaskBody from './components/Tasks/TaskBody';
 import { useState, useEffect } from 'react';
 import SignIn from './components/Body/SignIn'
 import SignUp from './components/Body/SignUp'
-import { Button } from 'react-bootstrap';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import apiurl from './environment';
 
 function App() {
   const [token, setToken] = useState('');
 
+  async function updateToken(newToken) {
+    setToken(newToken);
+    localStorage.setItem('token', newToken);
+    console.log('View token ---->', localStorage.token)
+  }
+
+  async function clearToken() {
+    await setToken('');
+    localStorage.clear();
+    console.log('token cleared')
+  }
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -38,27 +49,23 @@ function App() {
 
 
 
-
-  async function updateToken(newToken) {
-    setToken(newToken);
-    localStorage.setItem('token', newToken);
-    console.log('View token ---->', localStorage.token)
-  }
-
-  async function clearToken() {
-    await setToken('');
-    localStorage.clear();
-    console.log('token cleared')
-  }
-
-
   return (
-    <div className="App">
-      <Button type="submit" onClick={clearToken}>Log out</Button>
-      <SignUp updateToken={updateToken} token={token} />
-      <SignIn updateToken={updateToken} token={token} />
-      <TaskBody token={token} />
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <SignUp updateToken={updateToken} token={token} />
+        </Col>
+        <Col>
+          <SignIn updateToken={updateToken} token={token} />
+        </Col>
+        <Col>
+          <Button type="submit" onClick={clearToken}>Log out</Button>
+        </Col>
+      </Row>
+      <Row>
+        <TaskBody token={token} />
+      </Row>
+    </Container>
   );
 }
 

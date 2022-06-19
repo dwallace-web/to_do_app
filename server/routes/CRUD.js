@@ -2,25 +2,6 @@ const router = require("express").Router();
 const database = require("../database");
 const authorize = require("../util/authorize");
 
-//get all user tasks
-router.get("/api/tasks/", authorize, async (req, res) => {
-    // console.log(req.params)
-    // task_id = req.params.id;
-
-    const task_owner = res.user;
-    console.log("user", task_owner)
-
-    try {
-
-        const thisTask = await database.query("SELECT * FROM tasks WHERE task_owner = $1", [task_owner]);
-        res.status(201).json({
-            data: thisTask.rows
-        });
-    } catch (err) {
-        console.error(err.message);
-    }
-})
-
 //get a specific task
 router.get("/api/tasks/:id", authorize, async (req, res) => {
     console.log(req.params)
@@ -41,6 +22,22 @@ router.get("/api/tasks/:id", authorize, async (req, res) => {
             });
         }
 
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+//get all user tasks
+router.get("/api/tasks/", authorize, async (req, res) => {
+    console.log(req.params)
+    const task_owner = res.user;
+    console.log("user", task_owner)
+
+    try {
+        const theseTasks = await database.query("SELECT * FROM tasks WHERE task_owner = $1", [task_owner]);
+        res.status(201).json({
+            data: theseTasks.rows
+        });
     } catch (err) {
         console.error(err.message);
     }

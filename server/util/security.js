@@ -8,7 +8,7 @@ genToken = (userId) => {
             id: userId
         }
     };
-    return token.sign(payload, process.env.JWT, { expiresIn: '2min' })
+    return token.sign(payload, process.env.JWT, { expiresIn: '20min' })
 }
 
 

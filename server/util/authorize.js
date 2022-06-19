@@ -20,7 +20,7 @@ module.exports = async (req, res, next) => {
         }
 
     } catch (error) {
-        console.log(error)
+        console.log("something is broken " + error)
         return res.status(400).json("It's been too long. Sign Up or Sign In to continue.")
     }
 }
